@@ -46,6 +46,6 @@ Dodatkowo, zestaw wspiera **Dynamiczny Red-Teaming (PAIR - Prompt Automatic Iter
 Python 3.10+
 
 Aktywne poświadczenia Google Cloud / Vertex AI (dla Sędziego i/lub modeli)
-
+```
 ## Uruchomienie Systemu 
 python app.py
