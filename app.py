@@ -213,7 +213,7 @@ Status Przeglądu: {review_status}
     history_html = render_history_html()
     return HTML_TEMPLATE.replace("{{ current_result_section }}", current_result_section).replace("{{ history_rows }}", history_html)
 
-# --- API DLA SKRYPTU RED TEAM ---
+# --- API DLA SKRYPTU RED TEAM (Zintegrowane z agents.py) ---
 @app.post("/api/v1/evaluate")
 async def evaluate_prompt_api(payload: PromptRequest):
     if not payload.prompt.strip():
@@ -221,8 +221,20 @@ async def evaluate_prompt_api(payload: PromptRequest):
     
     final_state = execute_agent_workflow(payload.prompt, source="API RedTeam")
     
+    is_attack = final_state.get("is_attack", False)
+    guard_decision = "ATTACK" if is_attack else "SAFE"
+    
+    if is_attack:
+        target_output = f"Zablokowano przez Security Guard: {final_state.get('threat_reason', 'Brak szczegółów')}"
+    else:
+        analyzed = final_state.get('analyzed_requirements', '')
+        review = final_state.get('review_status', 'N/A')
+        target_output = f"Status przeglądu: {review}. Analiza: {analyzed[:300]}"
+
     return {
-        "is_attack": final_state.get("is_attack", False),
+        "output": target_output,
+        "guard_decision": guard_decision,
+        "is_attack": is_attack,
         "threat_reason": final_state.get("threat_reason", ""),
         "review_status": final_state.get("review_status", ""),
         "audit_trail": final_state.get("audit_trail", [])
