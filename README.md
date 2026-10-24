@@ -1,51 +1,60 @@
-# LLM Security Red-Team Harness & Multi-Agent System
+# 🛡️ LLM Security Red-Team Harness (AI Agents 2)
 
-Zaawansowany zestaw do testów bezpieczeństwa i benchmarkingu, zaprojektowany do testowania odporności wieloagentowych systemów LLM (zbudowanych przy użyciu FastAPI oraz LangGraph) na zaawansowane ataki typu prompt injection, jailbreak, ekstrakcję danych oraz wyczerpanie zasobów.
+Ten projekt przedstawia zaawansowany system oparty na architekturze wielu agentów (multi-agent system) zarządzanych przez **orkiestratora**, zaprojektowany w celu bezpiecznego przetwarzania zapytań i ochrony modeli językowych (LLM) przed złośliwymi atakatami.
 
----
-
-## 🏗️ Przegląd Architektury
-
-System implementuje solidną **pompę wieloagentową (Multi-Agent Pipeline)** wspieraną przez dedykowaną bramkę bezpieczeństwa:
-1. **Security Guard (Gatekeeper):** Pełni rolę pierwszej linii obrony, przechwytując dane wejściowe użytkownika, analizując intencje i odfiltrowując złośliwe prompty, zanim trafią one do rdzenia rozumowania.
-2. **Workflow Wieloagentowy (LangGraph):** Koordynuje wyspecjalizowanych agentów (np. Analityka, Projektanta, Testera, Bug Huntera), którzy collaborative rozwiązują złożone zadania.
-3. **Zewnętrzny Sędzia Benchmarkowy (Vertex AI):** Harness ewaluacyjny uderza w endpoint FastAPI i wykorzystuje chmurowy model LLM jako sędziego do oceny odporności systemu w skali binarnej (`10` dla `REFUSED`/`PASSED`, `0` dla `BYPASSED`/`FAILED`).
+> ℹ️ **Uwaga:** Repozytorium to skupia się na architekturze obronnej (agenci i orkiestracja). Symulacje ataków oraz scenariusze typu *Red-Team* (w tym próby *Prompt Injection*, *Jailbreak* itp.) zostały wydzielone i są obsługiwane w osobnym repozytorium.
 
 ---
 
-## 🛡️ Zdolności Obronne i Kategorie Testów
+## 🏗️ Architektura Systemu i Komponenty
 
-Harness testowy ocenia system docelowy w ramach **100 statycznych przypadków testowych** podzielonych na kluczowe domeny bezpieczeństwa:
-* **Direct & Indirect Prompt Injection** (Bezpośrednie i pośrednie wstrzykiwanie promptów)
-* **System Prompt & Instruction Leakage** (Wyciek promptu systemowego i instrukcji)
-* **Evasion via Encoding, Obfuscation & Multi-Language** (Ewade przez kodowanie, obfuskację i wielojęzyczność)
-* **Sensitive Information & PII Extraction** (Ekstrakcja wrażliwych danych i PII)
-* **Roleplay, Hypotheticals & Social Engineering** (Roleplay, hipotezy i inżynieria społeczna)
-* **Excessive Agency & Unsafe Tool / Code Execution** (Nadmierna sprawczość i niebezpieczne wykonywanie kodu/narzędzi)
-* **Denial of Service & Resource Exhaustion** (Odcięcie usługi i wyczerpanie zasobów)
-* **Logic, Hallucination & Integrity Manipulation** (Manipulacja logiką, halucynacjami i integralnością)
+System opiera się na współpracy wyspecjalizowanych agentów AI zarządzanych centralnie:
 
-Dodatkowo, zestaw wspiera **Dynamiczny Red-Teaming (PAIR - Prompt Automatic Iterative Refinement)** w celu wykrywania wieloetapowych ścieżek podatności.
+1. **Agent Sprawdzający Bezpieczeństwo (Security Screening Agent / Guardrail):**
+   * **Rola:** Pierwsza linia obrony systemu. Analizuje każde przychodzące zapytanie pod kątem potencjalnych zagrożeń (np. próby wstrzykiwania instrukcji, jailbreak, socjotechnika) zanim trafi ono do dalszego przetwarzania.
+2. **Orkiestrator (Orchestrator Agent):**
+   * **Rola:** Zarządza przepływem zadań, koordynuje komunikację pomiędzy poszczególnymi agentami oraz podejmuje decyzje o dalszym routingu zapytania w zależności od wyniku analizy bezpieczeństwa.
+3. **Pozostałe komponenty (np. Evaluation / Reporting):**
+   * **Rola:** Odpowiadają za rejestrowanie anomalii, generowanie raportów ze zdarzeń oraz kontrolowanie poprawności odpowiedzi systemu.
 
 ---
 
-## 📁 Struktura Projektu
+## 🚀 Główne Funkcjonalności
 
-```text
-├── app.py                  # Serwer FastAPI hostujący system wieloagentowy LangGraph
-├── config.py               # Zarządzanie konfiguracją (routing zapytań target vs. judge)
-├── main.py                 # Punkt wejścia harnessu do audytu red-team
-├── test_config.py          # Testy jednostkowe konfiguracji GCP oraz aplikacji
-├── requirements.txt        # Zależności projektu
-├── .env                    # Zmienne środowiskowe i klucze API (ignorowane przez git)
-└── .gitignore              # Reguły wykluczeń Gita
+- **Architektura Multi-Agentowa:** Podział zadań pomiędzy wyspecjalizowane podsystemy AI z centralnym zarządzaniem (orkiestratorem).
+- **Automatyczna filtracja zagrożeń:** Wykrywanie i blokowanie prób *Prompt Injection*, *Jailbreak*, wycieku promptów systemowych (*Prompt & Instruction Leakage*) oraz prób obejścia zabezpieczeń (*Evasion & Obfuscation*).
+- **Moduł Raportowania:** Rejestrowanie i kategoryzacja anomalii oraz nieautoryzowanych prób dostępu.
 
+##  📊 Kategorię Chronionych Wektorów Ataku
+System chroni przed m.in. następującymi zagrożeniami:
 
-🚀 Szybki start
-1. Wymagania wstępne
-Python 3.10+
+Direct & Indirect Prompt Injection: Próby bezpośredniego lub ukrytego (np. w plikach, JSON-ach) nadpisania instrukcji systemowych.
 
-Aktywne poświadczenia Google Cloud / Vertex AI (dla Sędziego i/lub modeli)
-```
-## Uruchomienie Systemu 
-python app.py
+System Prompt & Instruction Leakage: Próby wyciągnięcia ukrytych promptów systemowych i konfiguracji.
+
+Evasion & Obfuscation: Omijanie filtrów za pomocą kodowania (Base64, ROT13) lub nietypowych języków.
+
+Sensitive Info / PII Extraction: Próby wyłudzenia danych osobowych, kluczy API oraz haseł.
+
+Roleplay & Social Engineering: Próby manipulacji modelem poprzez udawane scenariusze.
+
+Unsafe Code Execution: Próby skłonienia systemu do wykonania niebezpiecznych poleceń.
+
+---
+
+## 💻 Wymagania i Instalacja
+
+### Wymagania wstępne
+* **Python 3.8+**
+* Dostęp do API odpowiedniego modelu LLM (np. OpenAI, Ollama itp.)
+
+### Instrukcja instalacji
+
+1. **Sklonuj repozytorium:**
+   ```bash
+   git clone [https://github.com/piotrwalas1/llm-security-redteam-harness-AIagents2.git](https://github.com/piotrwalas1/llm-security-redteam-harness-AIagents2.git)
+   cd llm-security-redteam-harness-AIagents2
+   ```
+   **Uruchamiamy w takiej kolejności**
+   python sut.py
+   python app.py 
