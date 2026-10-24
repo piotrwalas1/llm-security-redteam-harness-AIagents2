@@ -29,6 +29,7 @@ System opiera się na współpracy wyspecjalizowanych agentów AI zarządzanych 
 W panelu użytkownika w przeglądarce (http://127.0.0.1:8000/) możesz:
 
 Przesłać plik PDF (np. dokumentację, CV, raport).
+Wkleić prompt.
 
 Agent sprawdzający natychmiastowo przeskanuje treść pliku pod kątem ukrytych w nim złośliwych promptów (Indirect Prompt Injection).
 
