@@ -26,7 +26,7 @@ System opiera się na współpracy wyspecjalizowanych agentów AI zarządzanych 
 - **Moduł Raportowania:** Rejestrowanie i kategoryzacja anomalii oraz nieautoryzowanych prób dostępu.
 
   ## 📄 Obsługa Plików PDF
-W panelu użytkownika w przeglądarce (http://127.0.0.1:8000/)możesz:
+W panelu użytkownika w przeglądarce (http://127.0.0.1:8000/) możesz:
 
 Przesłać plik PDF (np. dokumentację, CV, raport).
 
