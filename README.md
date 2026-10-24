@@ -25,7 +25,7 @@ System opiera się na współpracy wyspecjalizowanych agentów AI zarządzanych 
 - **Automatyczna filtracja zagrożeń:** Wykrywanie i blokowanie prób *Prompt Injection*, *Jailbreak*, wycieku promptów systemowych (*Prompt & Instruction Leakage*) oraz prób obejścia zabezpieczeń (*Evasion & Obfuscation*).
 - **Moduł Raportowania:** Rejestrowanie i kategoryzacja anomalii oraz nieautoryzowanych prób dostępu.
 
-  ## 📄 Obsługa Plików PDF
+  ## 📄 Interfejs UI i obsługa Plików PDF
 W panelu użytkownika w przeglądarce (http://127.0.0.1:8000/) możesz:
 
 Przesłać plik PDF (np. dokumentację, CV, raport).
