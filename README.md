@@ -55,6 +55,6 @@ Unsafe Code Execution: Próby skłonienia systemu do wykonania niebezpiecznych p
    git clone [https://github.com/piotrwalas1/llm-security-redteam-harness-AIagents2.git](https://github.com/piotrwalas1/llm-security-redteam-harness-AIagents2.git)
    cd llm-security-redteam-harness-AIagents2
    ```
-   **Uruchamiamy w takiej kolejności**
+   **Uruchamiamy w takiej kolejności:**
 * python sut.py
-  * python app.py 
+ * python app.py 
