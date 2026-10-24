@@ -26,7 +26,7 @@ System opiera się na współpracy wyspecjalizowanych agentów AI zarządzanych 
 - **Moduł Raportowania:** Rejestrowanie i kategoryzacja anomalii oraz nieautoryzowanych prób dostępu.
 
 ##  📊 Kategorię Chronionych Wektorów Ataku
-System chroni przed m.in. następującymi zagrożeniami:
+**System chroni przed m.in. następującymi zagrożeniami:**
 
 Direct & Indirect Prompt Injection: Próby bezpośredniego lub ukrytego (np. w plikach, JSON-ach) nadpisania instrukcji systemowych.
 
@@ -56,5 +56,5 @@ Unsafe Code Execution: Próby skłonienia systemu do wykonania niebezpiecznych p
    cd llm-security-redteam-harness-AIagents2
    ```
    **Uruchamiamy w takiej kolejności**
-   python sut.py
-   python app.py 
+* python sut.py
+  * python app.py 
