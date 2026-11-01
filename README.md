@@ -36,7 +36,6 @@ Przepływ danych w systemie jest realizowany jako skompilowany graf skierowany (
                 Is Attack / Guard Fail?
                /                     \
          (TAK) /                     \ (NIE)
-      
 ```     
   +----------------------+   +--------------------------+
   | ⚖️ QA Reviewer       |   | 📋 Requirements Analyst |
