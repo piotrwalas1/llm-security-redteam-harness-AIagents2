@@ -1,70 +1,133 @@
-# 🛡️ LLM Security Red-Team Harness (AI Agents 2)
+# 📊 LLM Requirements & Functional Testing Harness (v5.0)
 
-Ten projekt przedstawia zaawansowany system oparty na architekturze wielu agentów (multi-agent system) zarządzanych przez **orkiestratora**, zaprojektowany w celu bezpiecznego przetwarzania zapytań i ochrony modeli językowych (LLM) przed złośliwymi atakatami.
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688?style=for-the-badge&logo=fastapi)
+![LangGraph](https://img.shields.io/badge/LangGraph-Orchestration-orange?style=for-the-badge)
+![Google GenAI](https://img.shields.io/badge/Google_GenAI-Gemini_2.5_Flash-4285F4?style=for-the-badge&logo=google)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python)
 
-> ℹ️ **Uwaga:** Repozytorium to skupia się na architekturze obronnej (agenci i orkiestracja). Symulacje ataków oraz scenariusze typu *Red-Team* (w tym próby *Prompt Injection*, *Jailbreak* itp.) zostały wydzielone i są obsługiwane w osobnym repozytorium.
+Zautomatyzowane środowisko klasy produkcyjnej przeznaczone do **analizy wymagań biznesowych (User Stories)**, wykrywania luk logicznych oraz **automatycznej generacji i wykonywania testów funkcjonalnych** na systemach opartych o modele językowe (LLM).
 
----
-
-## 🏗️ Architektura Systemu i Komponenty
-
-System opiera się na współpracy wyspecjalizowanych agentów AI zarządzanych centralnie:
-
-1. **Agent Sprawdzający Bezpieczeństwo (Security Screening Agent / Guardrail):**
-   * **Rola:** Pierwsza linia obrony systemu. Analizuje każde przychodzące zapytanie pod kątem potencjalnych zagrożeń (np. próby wstrzykiwania instrukcji, jailbreak, socjotechnika) zanim trafi ono do dalszego przetwarzania.
-2. **Orkiestrator (Orchestrator Agent):**
-   * **Rola:** Zarządza przepływem zadań, koordynuje komunikację pomiędzy poszczególnymi agentami oraz podejmuje decyzje o dalszym routingu zapytania w zależności od wyniku analizy bezpieczeństwa.
-3. **Pozostałe komponenty (np. Evaluation / Reporting):**
-   * **Rola:** Odpowiadają za rejestrowanie anomalii, generowanie raportów ze zdarzeń oraz kontrolowanie poprawności odpowiedzi systemu.
+System wykorzystuje architekturę wieloagentową (**Multi-Agent Graph Orchestration**) opartą o **LangGraph** oraz komunikację w czasie rzeczywistym poprzez **Server-Sent Events (SSE)**.
 
 ---
 
-## 🚀 Główne Funkcjonalności
+## 💡 Główne Funkcjonalności
 
-- **Architektura Multi-Agentowa:** Podział zadań pomiędzy wyspecjalizowane podsystemy AI z centralnym zarządzaniem (orkiestratorem).
-- **Automatyczna filtracja zagrożeń:** Wykrywanie i blokowanie prób *Prompt Injection*, *Jailbreak*, wycieku promptów systemowych (*Prompt & Instruction Leakage*) oraz prób obejścia zabezpieczeń (*Evasion & Obfuscation*).
-- **Moduł Raportowania:** Rejestrowanie i kategoryzacja anomalii oraz nieautoryzowanych prób dostępu.
-
-  ## 📄 Interfejs UI i obsługa Plików PDF
-W panelu użytkownika w przeglądarce (http://127.0.0.1:8000/) możesz:
-
-Przesłać plik PDF (np. dokumentację, CV, raport).
-Wkleić prompt.
-
-Agent sprawdzający natychmiastowo przeskanuje treść pliku pod kątem ukrytych w nim złośliwych promptów (Indirect Prompt Injection).
-
-Po pomyślnej weryfikacji Orkiestrator przekaże treść do przetworzenia i udzieli bezpiecznej odpowiedzi.
-
-##  📊 Kategorię Chronionych Wektorów Ataku
-**System chroni przed m.in. następującymi zagrożeniami:**
-
-Direct & Indirect Prompt Injection: Próby bezpośredniego lub ukrytego (np. w plikach, JSON-ach) nadpisania instrukcji systemowych.
-
-System Prompt & Instruction Leakage: Próby wyciągnięcia ukrytych promptów systemowych i konfiguracji.
-
-Evasion & Obfuscation: Omijanie filtrów za pomocą kodowania (Base64, ROT13) lub nietypowych języków.
-
-Sensitive Info / PII Extraction: Próby wyłudzenia danych osobowych, kluczy API oraz haseł.
-
-Roleplay & Social Engineering: Próby manipulacji modelem poprzez udawane scenariusze.
-
-Unsafe Code Execution: Próby skłonienia systemu do wykonania niebezpiecznych poleceń.
+- **📋 Analiza Wymagań Biznesowych (Requirements Analyst):** Automatyczna parsacja dokumentów PDF lub tekstu surowego. Agent wykrywa luki w User Stories, spójność logiki biznesowej oraz braki w przypadkach brzegowych (*Edge Cases*).
+- **🧪 Automatyczny Generator Testów (Test Designer):** Przekształcanie wyekstrahowanych wymagań w strukturyzowane przypadki testowe (`US-TC-xxx`) z oczekiwaną odpowiedzią systemu (`ALLOW`).
+- **⚙️ Wykonanie Testów na Żywo (SUT Runner & Reviewer):** Automatyczne wysyłanie zapytań testowych do docelowego środowiska (SUT) na porcie `8001`, ewaluacja czasów odpowiedzi oraz weryfikacja poprawności biznesowej (`PASSED` / `FALSE_POSITIVE` / `INCONCLUSIVE`).
+- **🛡️ Strażnik Bezpieczeństwa Wejścia (Harness Guard):** Wbudowana pierwsza linia obrony weryfikująca, czy przesłany plik z wymaganiami lub prompt ręczny nie zawiera prób ataku (*Prompt Injection*, *Jailbreak*, *Social Engineering*).
+- **🔄 Podgląd Pracy Agentów na Żywo (SSE Streaming UI):** Asynchroniczny interfejs webowy dostarczający natychmiastowy feedback z każdego węzła grafu bez przeładowywania strony.
+- **⚡ Awaryjny Tryb Heurystyczny (Degraded Mode):** Możliwość działania systemu bez podłączonego klucza GCP/Vertex API (z wykorzystaniem wbudowanych algorytmów heurystycznych i regex).
 
 ---
 
-## 💻 Wymagania i Instalacja
+## 🏗️ Architektura Grafu Agentów (LangGraph Workflow)
 
-### Wymagania wstępne
-* **Python 3.8+**
-* Dostęp do API odpowiedniego modelu LLM (np. OpenAI, Ollama itp.)
+Przepływ danych w systemie jest realizowany jako skompilowany graf skierowany (`StateGraph`):
+[ RAW INPUT / PDF ]
+                            |
+                            v
+                  +-------------------+
+                  | 🔍 Harness Guard  |
+                  +-------------------+
+                            |
+                Is Attack / Guard Fail?
+               /                     \
+         (TAK) /                     \ (NIE)
+              v                       v
+  +----------------------+   +--------------------------+
+  | ⚖️ QA Reviewer       |   | 📋 Requirements Analyst |
+  | (REJECTED_ATTACK)    |   +--------------------------+
+  +----------------------+                |
+              |                           v
+              |              +--------------------------+
+              |              | 🧪 Test Designer          |
+              |              +--------------------------+
+              |                           |
+              |                           v
+              |              +--------------------------+
+              |              | ⚙️ SUT Runner            |
+              |              +--------------------------+
+              |                           |
+              |                           v
+              |              +--------------------------+
+              \------------->| ⚖️ QA Reviewer            |
+                             +--------------------------+
+                                          |
+                                          v
+                                       [ END ]
 
-### Instrukcja instalacji
+### Role Agentów w Grafie:
+1. **`harness_guard_node`:** Skanuje wejście pod kątem wstrzyknięć kodu i prób manipulacji instrukcjami.
+2. **`requirements_analyst_node`:** Analizuje User Stories przy użyciu modelu Gemini 2.5 Flash.
+3. **`test_designer_node`:** Generuje pojedyncze scenariusze testowe z intencją `ALLOW`.
+4. **`test_runner_node`:** Wytwarza żądania HTTP POST do endpointu `/api/v1/evaluate` w SUT i rejestruje logi egzekucji.
+5. **`qa_reviewer_node`:** Agreguje statystyki wykonania, mierzy wskaźnik zaliczenia (*Pass Rate*) oraz tworzy podsumowanie sesji audytowej.
 
-1. **Sklonuj repozytorium:**
-   ```bash
-   git clone [https://github.com/piotrwalas1/llm-security-redteam-harness-AIagents2.git](https://github.com/piotrwalas1/llm-security-redteam-harness-AIagents2.git)
-   cd llm-security-redteam-harness-AIagents2
-   ```
-   **Uruchamiamy w takiej kolejności:**
-* python sut.py
- * python app.py 
+---
+
+## 📦 Struktura Projektu
+
+```text
+├── agents.py           # Logika węzłów LangGraph, definicje stanów Pydantic/TypedDict i agentów LLM
+├── app.py              # Główna aplikacja FastAPI (UI + Stream SSE endpoint /run-stream)
+├── sut.py              # Produkcyjny serwer SUT (System Under Test) z dwuwarstwową ochroną Pre-Guard
+├── README.md           # Dokumentacja projektu
+└── .env                # Zmienne środowiskowe (np. GCP_PROJECT_ID)
+💻 Wymagania i Uruchomienie
+Wymagania wstępne
+Python: 3.10 lub nowszy
+
+Dostęp do API: Konto Google Cloud z aktywnym Projektem i Vertex AI API (opcjonalnie dla pełnego trybu LLM)
+
+1. Instalacja zależności
+Sklonuj repozytorium i zainstaluj niezbędne pakiety Python:
+git clone [https://github.com/piotrwalas1/llm-security-redteam-harness-AIagents2.git](https://github.com/piotrwalas1/llm-security-redteam-harness-AIagents2.git)
+cd llm-security-redteam-harness-AIagents2
+
+pip install fastapi uvicorn pypdf jinja2 python-dotenv langchain-google-genai langgraph pydantic requests
+🚀 Uruchomienie Systemu (Krok po Kroku)
+Dla pełnego działania testów funkcjonalnych wymagane jest uruchomienie dwóch niezależnych usług:
+
+Krok 1: Uruchomienie serwera docelowego (SUT)
+Serwer SUT symuluje produkcyjny system bankowy/biznesowy z modelem Gemini 2.5 Flash oraz filtry bezpieczeństwa.
+python sut.py
+📍 Panel Główny UI dostępny pod adresem: http://127.0.0.1:8000
+
+🖥️ Obsługa Interfejsu Przeglądarki
+Otwórz w przeglądarce adres http://127.0.0.1:8000.
+
+Wgraj dokument PDF z wymaganiami biznesowymi (np. user_story_Santander.pdf) LUB wpisz tekst wymagań w polu tekstowym.
+
+Kliknij przycisk 🚀 Uruchom zespół agentów.
+
+Obserwuj w czasie rzeczywistym:
+
+Status analizy bezpieczeństwa wejścia.
+
+Wnioski analityka wymagań biznesowych.
+
+Wygenerowane przypadki testowe US-TC-xxx.
+
+Wyniki testów HTTP przesłanych do SUT wraz z uzasadnieniem.
+
+Historię poprzednich sesji audytowych z wskaźnikami powodzenia.
+
+🧪 Przykładowe Zapytanie Testowe do SUT (API Endpoint)
+Serwer SUT przyjmuje strukturyzowane zapytania JSON:
+curl -X POST "[http://127.0.0.1:8001/api/v1/evaluate](http://127.0.0.1:8001/api/v1/evaluate)" \
+     -H "Content-Type: application/json" \
+     -d '{"prompt": "Jako użytkownik chcę zalogować się do bankowości za pomocą biometrii."}'
+     Przykładowa odpowiedź SUT:
+     {
+  "output": "Funkcja logowania biometrycznego jest dostępna w zakładce Ustawienia -> Bezpieczeństwo.",
+  "blocked": false,
+  "guard_decision": "SAFE"
+}
+🤝 Autor i Licencja
+Autor: Piotr Wałas
+
+Repozytorium: saucedemo-sorting-tests / llm-security-redteam-harness
+
+Licencja: MIT
