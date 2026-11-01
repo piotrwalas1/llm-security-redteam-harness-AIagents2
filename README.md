@@ -37,7 +37,7 @@ Przepływ danych w systemie jest realizowany jako skompilowany graf skierowany (
                /                     \
          (TAK) /                     \ (NIE)
       
-     
+```     
   +----------------------+   +--------------------------+
   | ⚖️ QA Reviewer       |   | 📋 Requirements Analyst |
   | (REJECTED_ATTACK)    |   +--------------------------+
@@ -60,7 +60,7 @@ Przepływ danych w systemie jest realizowany jako skompilowany graf skierowany (
                                           v
                                        [ END ]
 
----
+```
 ### Role Agentów w Grafie:
 1. **`harness_guard_node`:** Skanuje wejście pod kątem wstrzyknięć kodu i prób manipulacji instrukcjami.
 2. **`requirements_analyst_node`:** Analizuje User Stories przy użyciu modelu Gemini 2.5 Flash.
