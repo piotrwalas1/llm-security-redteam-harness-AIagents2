@@ -25,7 +25,8 @@ System wykorzystuje architekturę wieloagentową (**Multi-Agent Graph Orchestrat
 ## 🏗️ Architektura Grafu Agentów (LangGraph Workflow)
 
 Przepływ danych w systemie jest realizowany jako skompilowany graf skierowany (`StateGraph`):
-[ RAW INPUT / PDF ]
+
+     ```           [ RAW INPUT / PDF ]
                             |
                             v
                   +-------------------+
@@ -57,7 +58,7 @@ Przepływ danych w systemie jest realizowany jako skompilowany graf skierowany (
                                           |
                                           v
                                        [ END ]
-
+``
 ### Role Agentów w Grafie:
 1. **`harness_guard_node`:** Skanuje wejście pod kątem wstrzyknięć kodu i prób manipulacji instrukcjami.
 2. **`requirements_analyst_node`:** Analizuje User Stories przy użyciu modelu Gemini 2.5 Flash.
